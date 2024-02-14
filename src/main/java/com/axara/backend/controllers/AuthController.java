@@ -1,7 +1,6 @@
 package com.axara.backend.controllers;
 
 import com.axara.backend.services.AuthService;
-import com.axara.backend.services.AuthServiceImp;
 import com.axara.backend.wire.AuthResponse;
 import com.axara.backend.wire.LoginRequest;
 import com.axara.backend.wire.RegisterRequest;

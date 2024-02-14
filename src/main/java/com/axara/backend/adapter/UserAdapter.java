@@ -11,10 +11,9 @@ import java.util.stream.Stream;
 public interface UserAdapter {
 
 
-//    @Mapping(source = "firstName", target = "firstName")
-//    @Mapping(source = "lastName", target = "lastName")
-//    @Mapping(source = "email", target = "email")
-//    @Mapping(source = "password", target = "password")
+    @Mapping(source = "firstName", target = "firstName")
+    @Mapping(source = "lastName", target = "lastName")
+    @Mapping(source = "email", target = "email")
     UserDto modelToWire(User user);
 
 //    @Mapping(source = "firstName", target = "firstName")
