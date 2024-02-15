@@ -10,16 +10,14 @@ import java.util.stream.Stream;
 @Mapper(componentModel = "spring")
 public interface UserAdapter {
 
+    // Adapters to transform Domain Models to Data Transfer object
 
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "email", target = "email")
     UserDto modelToWire(User user);
 
-//    @Mapping(source = "firstName", target = "firstName")
-//    @Mapping(source = "lastName", target = "lastName")
-//    @Mapping(source = "email", target = "email")
-//    @Mapping(source = "password", target = "password")
+
     User wireToModel(UserDto userDto);
 
 

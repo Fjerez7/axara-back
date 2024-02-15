@@ -19,12 +19,13 @@ public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-
+    // Method to authenticate user credentials
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // Method to verify user credentials against information stored in the DB
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -33,11 +34,13 @@ public class ApplicationConfig {
         return authenticationProvider;
     }
 
+    // Method to encrypt the password
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Method to load user details during authentication
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByEmail(username)

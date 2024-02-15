@@ -23,7 +23,9 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    // Method that generates a JWT token with additional claims and user information.
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
+        // Use the JWT library to construct the token with the secret key and set the issue date, expiration date, and additional claims.
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -32,15 +34,18 @@ public class JwtService {
                 .compact();
     }
 
+    // Method that extracts the username from the JWT token.
     public String getUserName(String token){
         return getClaim(token, Claims::getSubject);
     }
 
+    // Generic method that extracts a specific claim from the JWT token
     public <T> T getClaim(String token, Function<Claims,T> claimsResolver){
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    // Method that parses the JWT token and returns all claims contained in it
     private Claims getAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -50,20 +55,24 @@ public class JwtService {
                 .getBody();
     }
 
+    // Method that converts the secret key into a cryptographic key that can be used to sign and verify tokens
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    // Method that validates a token
     public boolean validateToken(String token, UserDetails userDetails){
         final String username = getUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    // Method that checks if a token has expired.
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
 
+    // Method that extracts the token expiration date
     private Date getExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
     }

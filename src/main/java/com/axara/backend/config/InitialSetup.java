@@ -19,6 +19,7 @@ public class InitialSetup {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    // Method that creates an administrator user and then saves that user in the DB.
     @PostConstruct
     public AuthResponse init(){
         var userAdmin = User.builder()
