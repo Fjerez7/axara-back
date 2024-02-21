@@ -41,6 +41,7 @@ public class UserController {
         }
         //Map UserEntity on UserDTO
         UserDto userDto = userAdapter.modelToWire(user.get());
+        userDto.setRole(user.get().getRole().name());
         return ResponseEntity.ok(userDto);
     }
 }

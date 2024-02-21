@@ -32,8 +32,10 @@ public class AuthServiceImp implements AuthService {
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         // Generates a token for the user
         var token = jwtService.generateToken(user);
+        var role = user.getRole();
         return AuthResponse.builder()
                 .token(token)
+                .role(role)
                 .build();
     }
 
