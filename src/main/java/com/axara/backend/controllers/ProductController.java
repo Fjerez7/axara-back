@@ -4,10 +4,10 @@ import com.axara.backend.adapter.ProductAdapter;
 import com.axara.backend.models.Image;
 import com.axara.backend.models.Product;
 import com.axara.backend.repositories.ProductRepository;
+import com.axara.backend.services.ProductImageService;
 import com.axara.backend.services.ProductService;
 import com.axara.backend.wire.ProductDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +31,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductAdapter productAdapter;
     private final ProductRepository productRepository;
+    private final ProductImageService productImageService;
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts (){
@@ -51,7 +51,8 @@ public class ProductController {
         }
     }
 
-    @PatchMapping("/{id}")
+    //Here
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDto> updateProductById(@PathVariable Long id, @RequestBody ProductDto productDto){
         Product saveUpdateProduct = productService.updateProductById(id, productDto);
         ProductDto convertUpdateProduct = productAdapter.modelToWire(saveUpdateProduct);
@@ -62,7 +63,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long id){
         Product product = productRepository.findById(id).orElseThrow();
         if (product != null){
-            productService.deleteProductImages(product);
+           productImageService.deleteProductImages(product);
             productService.deleteProductById(id);
             return ResponseEntity.ok("Product with ID: " + id + " was deleted");
         }else {
@@ -93,14 +94,5 @@ public class ProductController {
         productService.updateProduct(saveProductOnDb);
         ProductDto productDTO = productAdapter.modelToWire(saveProductOnDb);
         return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
-    }
-
-    @GetMapping("/images/{fileName}")
-    @ResponseBody
-    public ResponseEntity<InputStreamResource> getProductImage(@PathVariable String fileName) throws FileNotFoundException {
-        // Construir ruta de la imagen
-        String uploadDir = "src/main/resources/product-images/" + fileName;
-        var path = new FileInputStream(uploadDir);
-        return ResponseEntity.ok(new InputStreamResource(path));
     }
 }

@@ -1,21 +1,13 @@
 package com.axara.backend.services;
 
-import com.axara.backend.models.Image;
+
 import com.axara.backend.models.Product;
 import com.axara.backend.repositories.ProductRepository;
 import com.axara.backend.wire.ProductDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +59,9 @@ public class ProductService {
                     .size(productDto.getSize() != null ? productDto.getSize() : existingProduct.getSize())
                     .stock(productDto.getStock() != null ? productDto.getStock() : existingProduct.getStock())
                     .category(existingProduct.getCategory())
+                    .images(existingProduct.getImages())
                     .build();
+
             // Save new product
             return productRepository.save(updatedProduct);
         }else {
@@ -78,12 +72,4 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public void deleteProductImages (Product product){
-        String uploadDir = "src/main/resources/product-images/";
-        for (Image image : product.getImages()) {
-            String imagePath = uploadDir + image.getUid();
-            File file = new File(imagePath);
-            file.delete();
-        }
-    }
 }
