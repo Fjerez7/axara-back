@@ -1,6 +1,5 @@
 package com.axara.backend.wire;
 
-import com.axara.backend.models.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +12,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class CartDto {
     private Long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private String size;
-    private Integer stock;
-    private String category;
-    private List<Image> images;
+    private Long userId;
+    private List<OrderItemDto> orderItems;
+    private BigDecimal totalAmount;
 }

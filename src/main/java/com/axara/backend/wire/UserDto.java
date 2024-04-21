@@ -1,10 +1,11 @@
 package com.axara.backend.wire;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     private Long id;
     private String firstName;
