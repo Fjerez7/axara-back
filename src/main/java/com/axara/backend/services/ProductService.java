@@ -72,4 +72,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public void updateProductStock(Long id, Integer quantitySold){
+        Product product = productRepository.findById(id).orElseThrow();
+        product.setStock(product.getStock() - quantitySold);
+        productRepository.save(product);
+    }
+
 }

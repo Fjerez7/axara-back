@@ -43,7 +43,8 @@ public class SecurityConfig {
                 new AntPathRequestMatcher("/api/v1/users/user/{id}"),
                 new AntPathRequestMatcher("/api/v1/users/user/{id}/change-password"),
                 new AntPathRequestMatcher("/api/v1/cart/**"),
-                new AntPathRequestMatcher("/api/v1/order-items/**")
+                new AntPathRequestMatcher("/api/v1/order-items/**"),
+                new AntPathRequestMatcher("/api/v1/checkout/**")
         );
     }
 }
