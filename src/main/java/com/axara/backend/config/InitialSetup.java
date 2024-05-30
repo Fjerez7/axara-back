@@ -22,16 +22,20 @@ public class InitialSetup {
     // Method that creates an administrator user and then saves that user in the DB.
     @PostConstruct
     public AuthResponse init(){
-        var userAdmin = User.builder()
-                .email("admin@gmail.com")
-                .password(passwordEncoder.encode("admin123"))
-                .firstName("admin")
-                .lastName("AD")
-                .role(Role.ADMIN)
-                .build();
-        userRepository.save(userAdmin);
-        return AuthResponse.builder()
-                .token(jwtService.generateToken(userAdmin))
-                .build();
+        if (userRepository.findByEmail("admin@gmail.com").isEmpty()){
+            var userAdmin = User.builder()
+                    .email("admin@gmail.com")
+                    .password(passwordEncoder.encode("admin123"))
+                    .firstName("admin")
+                    .lastName("AD")
+                    .role(Role.ADMIN)
+                    .build();
+            userRepository.save(userAdmin);
+            return AuthResponse.builder()
+                    .token(jwtService.generateToken(userAdmin))
+                    .build();
+        }else {
+            return null;
+        }
     }
 }

@@ -40,9 +40,7 @@ public class OrderItemAdapterTest {
                 .quantity(1)
                 .price(BigDecimal.valueOf(10.000))
                 .build();
-
         OrderItemDto orderItemDto = orderItemAdapter.modelToWire(orderItem);
-
         ProductDto productDto = ProductDto.builder()
                 .id(1L)
                 .name("Product")
@@ -54,7 +52,6 @@ public class OrderItemAdapterTest {
                 .quantity(1)
                 .price(BigDecimal.valueOf(10.000))
                 .build();
-
         assertEquals(expectedOrderItemDto, orderItemDto);
     }
 
