@@ -4,6 +4,7 @@ import com.axara.backend.repositories.ProductRepository;
 import com.axara.backend.services.ProductImageService;
 import com.axara.backend.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,14 @@ public class ProductImageController {
     private final ProductImageService productImageService;
     private final ProductService productService;
     private final ProductRepository productRepository;
+    @Value("${product.images.path}")
+    private String productImagesPath;
 
     @GetMapping("/{fileName}")
     @ResponseBody
     public ResponseEntity<InputStreamResource> getProductImage(@PathVariable String fileName) throws FileNotFoundException {
         // Construir ruta de la imagen
-        String uploadDir = "src/main/resources/product-images/" + fileName;
+        String uploadDir = productImagesPath + fileName;
         var path = new FileInputStream(uploadDir);
         return ResponseEntity.ok(new InputStreamResource(path));
     }

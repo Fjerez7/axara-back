@@ -4,6 +4,7 @@ import com.axara.backend.models.Image;
 import com.axara.backend.models.Product;
 import com.axara.backend.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,10 +26,12 @@ public class ProductImageService {
     private final ProductRepository productRepository;
     private final ProductService productService;
 
+    @Value("${product.images.path}")
+    private String productImagesPath;
     //Here
     public void uploadImage(Long productId, MultipartFile[] files) throws IOException {
         List<Image> images = new ArrayList<>();
-        String uploadDir = "src/main/resources/product-images/";
+        String uploadDir = productImagesPath;
         var product = productRepository.findById(productId).orElseThrow();
         for (MultipartFile file : files){
             UUID uuid = UUID.randomUUID();
@@ -45,7 +48,7 @@ public class ProductImageService {
     }
 
     public void deleteProductImages (Product product){
-        String uploadDir = "src/main/resources/product-images/";
+        String uploadDir = productImagesPath;
         for (Image image : product.getImages()) {
             String imagePath = uploadDir + image.getUid();
             File file = new File(imagePath);
@@ -55,7 +58,7 @@ public class ProductImageService {
 
     //Here
     public void deleteImage(Long productId,String uid){
-        String uploadDir = "src/main/resources/product-images/";
+        String uploadDir = productImagesPath;
         String imagePath = uploadDir + uid;
         var product = productRepository.findById(productId).orElseThrow();
         File file = new File(imagePath);

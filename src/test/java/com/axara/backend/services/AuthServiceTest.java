@@ -3,6 +3,9 @@ package com.axara.backend.services;
 
 import com.axara.backend.models.Role;
 import com.axara.backend.models.User;
+import com.axara.backend.repositories.CartRepository;
+import com.axara.backend.repositories.CheckoutRepository;
+import com.axara.backend.repositories.OrderItemRepository;
 import com.axara.backend.repositories.UserRepository;
 import com.axara.backend.wire.AuthResponse;
 import com.axara.backend.wire.LoginRequest;
@@ -35,8 +38,20 @@ public class AuthServiceTest {
         @MockBean
         private AuthenticationManager authenticationManager;
 
+        @Autowired
+        private CartRepository cartRepository;
+
+        @Autowired
+        private CheckoutRepository checkoutRepository;
+
+        @Autowired
+        private OrderItemRepository orderItemRepository;
+
         @BeforeEach
         public void setUp() {
+            orderItemRepository.deleteAll();
+            checkoutRepository.deleteAll();
+            cartRepository.deleteAll();
             userRepository.deleteAll();
         }
 

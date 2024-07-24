@@ -8,6 +8,7 @@ import com.axara.backend.services.ProductImageService;
 import com.axara.backend.services.ProductService;
 import com.axara.backend.wire.ProductDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -32,6 +33,8 @@ public class ProductController {
     private final ProductAdapter productAdapter;
     private final ProductRepository productRepository;
     private final ProductImageService productImageService;
+    @Value("${product.images.path}")
+    private String productImagesPath;
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts (){
@@ -76,7 +79,7 @@ public class ProductController {
     public ResponseEntity<ProductDto> createProduct(MultipartFile[] files, ProductDto productDto) throws IOException {
         List<Image> imageValues = new ArrayList<>();
         // Definir la ruta de la carpeta de imágenes
-        String uploadDir = "src/main/resources/product-images/";
+        String uploadDir = productImagesPath;
 
         for (MultipartFile file : files) {
             UUID uuid = UUID.randomUUID();
